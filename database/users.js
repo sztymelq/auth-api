@@ -8,11 +8,13 @@ const userSchema = mongoose.Schema({
     surname: {
         type: 'String'
     },
-    token: {
+    password: {
         type: 'String',
         required: true
     }
-})
+});
 
-module.exports = mongoose.model('user', userSchema);
+const user = module.exports = mongoose.model('user', userSchema);
 
+user.getAll = (callback) => user.find({}, callback);
+user.getByName = (name, callback) => user.findOne({ name }, callback);
