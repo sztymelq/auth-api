@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('./bin/config');
+const db = require('./database/db').connect();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,7 +8,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+const index = require('./routes/index');
+const register = require('./routes/register');
+const login = require('./routes/login');
 
 var app = express();
 
@@ -26,9 +29,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// Routes
+app.use('/register', register);
 app.use(authValidator);
-
 app.use('/', index);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
